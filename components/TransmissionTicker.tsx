@@ -25,7 +25,7 @@ export default function TransmissionTicker() {
   }, []);
 
   return (
-    <div className="h-6 bg-[#d42426]/10 border-b border-[#d42426]/20 flex items-center px-10 overflow-hidden relative z-50">
+    <div className="h-6 bg-[#d42426]/10 border-b border-[#d42426]/20 flex items-center px-4 lg:px-10 overflow-hidden relative z-50">
       <div className="flex items-center gap-3 shrink-0 mr-4">
         <div className="w-1.5 h-1.5 rounded-full bg-[#d42426] animate-pulse" />
         <span className="text-[9px] font-black text-[#d42426] uppercase tracking-[0.3em]">
@@ -48,7 +48,7 @@ export default function TransmissionTicker() {
         </AnimatePresence>
       </div>
 
-      <div className="flex items-center gap-4 text-[8px] font-mono text-white/20">
+      <div className="hidden sm:flex items-center gap-4 text-[8px] font-mono text-white/20">
         <span className="animate-pulse">SENS-SCN: ACTIVE</span>
         <span>REF-ROT: {Math.floor(Math.random() * 900) + 100}ms</span>
       </div>

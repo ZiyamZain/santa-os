@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 
 export default function MissionProtocol() {
   return (
-    <div className="flex flex-col h-full gap-10 max-w-6xl mx-auto py-12 px-8 overflow-y-auto no-scrollbar">
+    <div className="flex flex-col h-full gap-10 max-w-6xl mx-auto py-12 px-4 lg:px-8 overflow-y-auto no-scrollbar">
       {/* Cinematic Header */}
       <header className="relative space-y-6">
         <motion.div
@@ -24,7 +24,7 @@ export default function MissionProtocol() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className="text-7xl font-black tracking-tighter text-white leading-none"
+            className="text-4xl lg:text-7xl font-black tracking-tighter text-white leading-none"
           >
             MISSION{" "}
             <span className="text-[#d42426] drop-shadow-[0_0_30px_rgba(212,36,38,0.4)]">

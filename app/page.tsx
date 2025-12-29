@@ -13,7 +13,7 @@ import GiftIntelligenceModule from "@/components/GiftIntelligenceModule";
 import AudioController from "@/components/AudioController";
 import CinematicLoader from "@/components/CinematicLoader";
 import TransmissionTicker from "@/components/TransmissionTicker";
-import { AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import Snowfall from "react-snowfall";
 import {
   worldJoyData,
@@ -41,6 +41,10 @@ export default function SantaDashboard() {
 
   const [currentTime, setCurrentTime] = useState(new Date());
   const [isLoading, setIsLoading] = useState(true);
+
+  // Mobile Toggles
+  const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
+  const [mobileRightPanelOpen, setMobileRightPanelOpen] = useState(false);
 
   useEffect(() => {
     const timer = setInterval(() => setCurrentTime(new Date()), 1000);
@@ -83,7 +87,7 @@ export default function SantaDashboard() {
       ) : (
         <main
           key="dashboard"
-          className="h-screen w-full flex bg-[#030304] text-white overflow-hidden font-sans selection:bg-[#d42426]/30 relative aurora-bg animate-aurora"
+          className="h-[100dvh] w-full flex flex-col lg:flex-row bg-[#030304] text-white overflow-hidden font-sans selection:bg-[#d42426]/30 relative aurora-bg animate-aurora"
         >
           <Snowfall
             color="#fff"
@@ -96,32 +100,90 @@ export default function SantaDashboard() {
               opacity: 0.4,
             }}
           />
-          <Sidebar
-            activeModule={activeModule}
-            onModuleChange={setActiveModule}
-          />
 
-          <section className="flex-1 flex flex-col min-w-0 bg-[#070708] relative">
+          {/* Mobile Sidebar Overlay */}
+          <AnimatePresence>
+            {mobileSidebarOpen && (
+              <>
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  onClick={() => setMobileSidebarOpen(false)}
+                  className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 lg:hidden"
+                />
+                <motion.div
+                  initial={{ x: "-100%" }}
+                  animate={{ x: 0 }}
+                  exit={{ x: "-100%" }}
+                  transition={{ type: "spring", damping: 25, stiffness: 200 }}
+                  className="fixed inset-y-0 left-0 z-50 h-full lg:hidden shadow-2xl"
+                >
+                  <Sidebar
+                    activeModule={activeModule}
+                    onModuleChange={(id) => {
+                      setActiveModule(id);
+                      setMobileSidebarOpen(false);
+                    }}
+                  />
+                </motion.div>
+              </>
+            )}
+          </AnimatePresence>
+
+          {/* Desktop Sidebar */}
+          <div className="hidden lg:block h-full shrink-0">
+            <Sidebar
+              activeModule={activeModule}
+              onModuleChange={setActiveModule}
+            />
+          </div>
+
+          <section className="flex-1 flex flex-col min-w-0 bg-[#070708] relative z-10 lg:z-0">
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-[#d42426]/5 rounded-full blur-[120px] pointer-events-none" />
 
-            <header className="h-20 border-b border-white/5 flex items-center justify-between px-10 relative z-10 backdrop-blur-sm bg-black/10">
-              <div className="flex flex-col">
-                <h1 className="text-2xl font-black tracking-tight flex items-center gap-3">
-                  <span className="text-white/40 font-light">SYSTEM</span>
-                  <span className="bg-gradient-to-r from-white to-white/60 bg-clip-text text-transparent">
-                    OPERATIONS
-                  </span>
-                </h1>
-                <div className="flex items-center gap-2">
-                  <span className="w-1 h-1 rounded-full bg-[#d42426]" />
-                  <p className="text-[10px] text-white/30 uppercase tracking-[0.4em] font-medium">
-                    Node: North-Pole-Alpha-1
-                  </p>
+            <header className="h-16 lg:h-20 border-b border-white/5 flex items-center justify-between px-4 lg:px-10 relative z-20 backdrop-blur-sm bg-black/10 shrink-0">
+              <div className="flex items-center gap-4">
+                {/* Mobile Menu Toggle */}
+                <button
+                  onClick={() => setMobileSidebarOpen(true)}
+                  className="lg:hidden p-2 -ml-2 text-white/60 hover:text-white"
+                >
+                  <svg
+                    className="w-6 h-6"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M4 6h16M4 12h16M4 18h16"
+                    />
+                  </svg>
+                </button>
+
+                <div className="flex flex-col">
+                  <h1 className="text-lg lg:text-2xl font-black tracking-tight flex items-center gap-2 lg:gap-3">
+                    <span className="text-white/40 font-light hidden sm:inline">
+                      SYSTEM
+                    </span>
+                    <span className="bg-gradient-to-r from-white to-white/60 bg-clip-text text-transparent">
+                      OPERATIONS
+                    </span>
+                  </h1>
+                  <div className="flex items-center gap-2">
+                    <span className="w-1 h-1 rounded-full bg-[#d42426]" />
+                    <p className="text-[8px] lg:text-[10px] text-white/30 uppercase tracking-[0.4em] font-medium">
+                      Node: North-Pole-Alpha
+                    </p>
+                  </div>
                 </div>
               </div>
 
-              <div className="flex items-center gap-12">
-                <div className="flex flex-col items-end">
+              <div className="flex items-center gap-4 lg:gap-12">
+                <div className="hidden sm:flex flex-col items-end">
                   <span className="text-[10px] text-white/30 uppercase tracking-[0.2em] font-bold">
                     Orbital Period
                   </span>
@@ -134,9 +196,9 @@ export default function SantaDashboard() {
                     })}
                   </span>
                 </div>
-                <div className="h-8 w-[1px] bg-white/10" />
+                <div className="hidden sm:block h-8 w-[1px] bg-white/10" />
                 <div className="flex flex-col items-end">
-                  <span className="text-[10px] text-white/30 uppercase tracking-[0.2em] font-bold">
+                  <span className="hidden sm:inline text-[10px] text-white/30 uppercase tracking-[0.2em] font-bold">
                     Countdown
                   </span>
                   <div className="flex items-baseline gap-1">
@@ -148,19 +210,43 @@ export default function SantaDashboard() {
                     </span>
                   </div>
                 </div>
+
+                {/* Mobile Right Panel Toggle */}
+                <button
+                  onClick={() => setMobileRightPanelOpen(true)}
+                  className="lg:hidden p-2 -mr-2 text-white/60 hover:text-white relative"
+                >
+                  <svg
+                    className="w-6 h-6"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                    />
+                  </svg>
+                  {/* Indicator dot if logic requires attention? */}
+                  <span className="absolute top-2 right-2 w-2 h-2 rounded-full bg-[#d42426] animate-pulse" />
+                </button>
               </div>
             </header>
 
             <TransmissionTicker />
 
-            <div className="flex-1 p-10 overflow-hidden relative z-10">
-              <div className="h-full flex flex-col gap-8">
-                <header className="flex justify-between items-end">
-                  <div className="space-y-4">
-                    <h2 className="text-4xl font-black tracking-tighter text-white uppercase flex items-center gap-4">
-                      {getModuleTitle(activeModule)}
+            <div className="flex-1 p-4 lg:p-10 overflow-hidden relative z-10 flex flex-col">
+              <div className="flex-1 flex flex-col gap-4 lg:gap-8 min-h-0">
+                <header className="flex justify-between items-end shrink-0">
+                  <div className="space-y-2 lg:space-y-4">
+                    <h2 className="text-2xl lg:text-4xl font-black tracking-tighter text-white uppercase flex items-center gap-2 lg:gap-4">
+                      <span className="truncate max-w-[200px] sm:max-w-none">
+                        {getModuleTitle(activeModule)}
+                      </span>
                       <span
-                        className={`text-xs font-mono border px-2 py-0.5 rounded uppercase tracking-widest ${
+                        className={`text-[10px] lg:text-xs font-mono border px-2 py-0.5 rounded uppercase tracking-widest ${
                           activeModule === "archive"
                             ? "text-white/20 border-white/10"
                             : "text-[#d42426] border-[#d42426]/30 animate-pulse"
@@ -178,86 +264,136 @@ export default function SantaDashboard() {
                     />
                   </div>
 
-                  <ModuleMetrics activeModule={activeModule} />
+                  <div className="hidden sm:block">
+                    <ModuleMetrics activeModule={activeModule} />
+                  </div>
                 </header>
 
-                <div className="flex-1 min-h-0">
-                  {activeModule === "mission" && <MissionProtocol />}
-                  {activeModule === "map" && (
-                    <GlobalJoyMap
-                      onSelectCountry={setSelectedCountry}
-                      selectedId={selectedCountry?.id}
-                    />
-                  )}
-                  {activeModule === "letters" && (
-                    <LettersModule
-                      onSelectLetter={setSelectedLetter}
-                      selectedId={selectedLetter?.id}
-                    />
-                  )}
-                  {activeModule === "elves" && (
-                    <ElfOperationsModule
-                      elves={elves}
-                      onSelectElf={(elf) => setSelectedElfId(elf.id)}
-                      selectedId={selectedElfId}
-                    />
-                  )}
+                <div className="flex-1 min-h-0 relative">
+                  {/* Container for scrollable content */}
+                  <div className="absolute inset-0 overflow-y-auto pr-2 custom-scrollbar">
+                    {activeModule === "mission" && <MissionProtocol />}
+                    {activeModule === "map" && (
+                      <GlobalJoyMap
+                        onSelectCountry={(c) => {
+                          setSelectedCountry(c);
+                          if (window.innerWidth < 1024)
+                            setMobileRightPanelOpen(true);
+                        }}
+                        selectedId={selectedCountry?.id}
+                      />
+                    )}
+                    {activeModule === "letters" && (
+                      <LettersModule
+                        onSelectLetter={(l) => {
+                          setSelectedLetter(l);
+                          if (window.innerWidth < 1024)
+                            setMobileRightPanelOpen(true);
+                        }}
+                        selectedId={selectedLetter?.id}
+                      />
+                    )}
+                    {activeModule === "elves" && (
+                      <ElfOperationsModule
+                        elves={elves}
+                        onSelectElf={(elf) => {
+                          setSelectedElfId(elf.id);
+                          if (window.innerWidth < 1024)
+                            setMobileRightPanelOpen(true);
+                        }}
+                        selectedId={selectedElfId}
+                      />
+                    )}
 
-                  {activeModule === "intelligence" && (
-                    <GiftIntelligenceModule />
-                  )}
+                    {activeModule === "intelligence" && (
+                      <GiftIntelligenceModule />
+                    )}
 
-                  {(activeModule === "delivery" ||
-                    activeModule === "archive") && (
-                    <div className="h-full flex flex-col justify-center items-center text-center space-y-8 animate-in fade-in duration-1000">
-                      <div className="w-32 h-32 rounded-full border border-white/5 bg-white/[0.02] flex items-center justify-center relative">
-                        <div className="absolute inset-0 rounded-full border-t-2 border-[#d42426] animate-spin" />
-                        <svg
-                          className="w-12 h-12 text-white/20"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={1}
-                            d={
-                              activeModule === "archive"
-                                ? "M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
-                                : "M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-                            }
-                          />
-                        </svg>
+                    {(activeModule === "delivery" ||
+                      activeModule === "archive") && (
+                      <div className="h-full flex flex-col justify-center items-center text-center space-y-8 animate-in fade-in duration-1000">
+                        <div className="w-32 h-32 rounded-full border border-white/5 bg-white/[0.02] flex items-center justify-center relative">
+                          <div className="absolute inset-0 rounded-full border-t-2 border-[#d42426] animate-spin" />
+                          <svg
+                            className="w-12 h-12 text-white/20"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={1}
+                              d={
+                                activeModule === "archive"
+                                  ? "M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+                                  : "M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                              }
+                            />
+                          </svg>
+                        </div>
+                        <div className="space-y-2">
+                          <h3 className="text-xl font-black text-white/80 uppercase tracking-widest">
+                            {activeModule === "archive"
+                              ? "Archive Encrypted"
+                              : "Temporal Calibration"}
+                          </h3>
+                          <p className="text-sm text-white/30 max-w-sm leading-relaxed px-4">
+                            {activeModule === "archive"
+                              ? "Historical data for previous Christmas cycles is currently locked for deep-cold storage. Access restores on Dec 26."
+                              : "Synchronizing orbital delivery lanes with global timezones. Establishing temporal stability for the Big Night."}
+                          </p>
+                        </div>
                       </div>
-                      <div className="space-y-2">
-                        <h3 className="text-xl font-black text-white/80 uppercase tracking-widest">
-                          {activeModule === "archive"
-                            ? "Archive Encrypted"
-                            : "Temporal Calibration"}
-                        </h3>
-                        <p className="text-sm text-white/30 max-w-sm leading-relaxed">
-                          {activeModule === "archive"
-                            ? "Historical data for previous Christmas cycles is currently locked for deep-cold storage. Access restores on Dec 26."
-                            : "Synchronizing orbital delivery lanes with global timezones. Establishing temporal stability for the Big Night."}
-                        </p>
-                      </div>
-                    </div>
-                  )}
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
           </section>
 
-          <RightPanel
-            activeModule={activeModule}
-            selectedData={activeModule === "map" ? selectedCountry : undefined}
-            selectedLetter={
-              activeModule === "letters" ? selectedLetter : undefined
-            }
-            selectedElf={activeModule === "elves" ? selectedElf : undefined}
-            onAssignTask={handleAssignTask}
-          />
+          {/* Mobile Right Panel Overlay */}
+          <AnimatePresence>
+            {mobileRightPanelOpen && (
+              <motion.div
+                initial={{ x: "100%" }}
+                animate={{ x: 0 }}
+                exit={{ x: "100%" }}
+                transition={{ type: "spring", damping: 25, stiffness: 200 }}
+                className="fixed inset-0 z-50 bg-[#070708] lg:hidden"
+              >
+                <RightPanel
+                  activeModule={activeModule}
+                  selectedData={
+                    activeModule === "map" ? selectedCountry : undefined
+                  }
+                  selectedLetter={
+                    activeModule === "letters" ? selectedLetter : undefined
+                  }
+                  selectedElf={
+                    activeModule === "elves" ? selectedElf : undefined
+                  }
+                  onAssignTask={handleAssignTask}
+                  onClose={() => setMobileRightPanelOpen(false)}
+                />
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* Desktop Right Panel */}
+          <div className="hidden lg:block h-full shrink-0">
+            <RightPanel
+              activeModule={activeModule}
+              selectedData={
+                activeModule === "map" ? selectedCountry : undefined
+              }
+              selectedLetter={
+                activeModule === "letters" ? selectedLetter : undefined
+              }
+              selectedElf={activeModule === "elves" ? selectedElf : undefined}
+              onAssignTask={handleAssignTask}
+            />
+          </div>
         </main>
       )}
     </AnimatePresence>

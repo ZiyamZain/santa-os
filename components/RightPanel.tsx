@@ -45,22 +45,46 @@ export default function RightPanel({
   selectedLetter,
   selectedElf,
   onAssignTask,
+  onClose,
 }: {
   activeModule: string;
   selectedData?: CountryJoyData;
   selectedLetter?: LetterData;
   selectedElf?: ElfData;
   onAssignTask?: (elfId: string, task: Task) => void;
+  onClose?: () => void;
 }) {
   return (
-    <aside className="w-[450px] bg-black/40 border-l border-[#d42426]/20 flex flex-col h-full backdrop-blur-xl">
-      <div className="p-6 border-b border-white/5">
-        <h3 className="text-xs font-black uppercase tracking-[0.2em] text-[#ffcc33]/80">
-          Contextual Data
-        </h3>
-        <p className="text-[10px] text-white/30 truncate mt-1">
-          Module: {activeModule.toUpperCase()}
-        </p>
+    <aside className="w-full lg:w-[450px] bg-black/40 border-l border-[#d42426]/20 flex flex-col h-full backdrop-blur-xl absolute lg:relative inset-0 z-40 lg:z-auto">
+      <div className="p-6 border-b border-white/5 flex justify-between items-start">
+        <div>
+          <h3 className="text-xs font-black uppercase tracking-[0.2em] text-[#ffcc33]/80">
+            Contextual Data
+          </h3>
+          <p className="text-[10px] text-white/30 truncate mt-1">
+            Module: {activeModule.toUpperCase()}
+          </p>
+        </div>
+        {onClose && (
+          <button
+            onClick={onClose}
+            className="lg:hidden p-2 -mr-2 text-white/40 hover:text-white"
+          >
+            <svg
+              className="w-5 h-5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          </button>
+        )}
       </div>
 
       <div className="flex-1 p-6 space-y-8 overflow-y-auto">
@@ -83,7 +107,7 @@ export default function RightPanel({
         ) && <EmptyState moduleName={activeModule} />}
       </div>
 
-      <div className="p-6 bg-black/40 border-t border-white/5">
+      <div className="p-6 bg-black/40 border-t border-white/5 safe-pb">
         <button className="w-full py-3 bg-[#d42426]/20 border border-[#d42426]/50 rounded-lg text-[10px] font-black uppercase text-white tracking-[0.2em] hover:bg-[#d42426]/30 transition-all">
           Emergency Protocol
         </button>

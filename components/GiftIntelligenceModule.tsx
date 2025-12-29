@@ -27,7 +27,7 @@ export default function GiftIntelligenceModule() {
 
   return (
     <div className="flex flex-col h-full gap-8">
-      <div className="grid grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
         <StatCard
           label="Total Stock"
           value="1.2M Units"
@@ -45,7 +45,7 @@ export default function GiftIntelligenceModule() {
         />
       </div>
 
-      <div className="flex-1 bg-white/[0.02] border border-white/5 rounded-3xl p-8 overflow-hidden flex flex-col">
+      <div className="flex-1 bg-white/[0.02] border border-white/5 rounded-3xl p-4 lg:p-8 overflow-hidden flex flex-col">
         <h3 className="text-xs font-black uppercase tracking-[0.2em] text-white/30 mb-6">
           Production Inventory
         </h3>

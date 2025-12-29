@@ -42,7 +42,7 @@ export default function ElfOperationsModule({
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-6 flex-1 overflow-y-auto pr-2 scrollbar-thin">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 flex-1 overflow-y-auto pr-2 scrollbar-thin">
         {elves.map((elf) => (
           <button
             key={elf.id}

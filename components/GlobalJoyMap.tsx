@@ -35,7 +35,7 @@ export default function GlobalJoyMap({
       </svg>
 
       {/* Interactive Region Nodes */}
-      <div className="absolute inset-0 p-10">
+      <div className="absolute inset-0 p-4 lg:p-10">
         {worldJoyData.map((region) => (
           <button
             key={region.id}
@@ -93,8 +93,8 @@ export default function GlobalJoyMap({
       </div>
 
       {/* Legend */}
-      <div className="absolute bottom-10 left-10 flex flex-col gap-4">
-        <div className="flex items-center gap-6">
+      <div className="absolute bottom-4 left-4 lg:bottom-10 lg:left-10 flex flex-col gap-4 max-w-[200px] lg:max-w-none">
+        <div className="flex flex-col lg:flex-row items-start lg:items-center gap-2 lg:gap-6">
           <LegendItem color="bg-[#d42426]" label="CRITICAL JOY" />
           <LegendItem color="bg-[#ffcc33]" label="STABLE EMOTION" />
           <LegendItem color="bg-emerald-500" label="MAX VELOCITY" />
