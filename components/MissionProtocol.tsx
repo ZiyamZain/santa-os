@@ -80,7 +80,7 @@ export default function MissionProtocol() {
             Active Status
           </h3>
           <div className="space-y-1">
-            <div className="text-4xl font-black text-white tracking-tighter">
+            <div className="text-2xl lg:text-3xl font-black text-white tracking-tighter overflow-hidden text-ellipsis">
               OPERATIONAL
             </div>
             <div className="flex items-center gap-2 text-[#ffcc33] text-[10px] font-bold">
