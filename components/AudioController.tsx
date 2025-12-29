@@ -23,7 +23,7 @@ export default function AudioController() {
   };
 
   return (
-    <div className="fixed bottom-28 right-10 z-[100]">
+    <div className="w-full px-4 mb-4">
       <audio
         ref={audioRef}
         src="/music/christmas-bg.mp3"
@@ -41,16 +41,16 @@ export default function AudioController() {
 
       <button
         onClick={toggleAudio}
-        className={`group relative flex items-center gap-3 px-4 py-3 rounded-2xl border transition-all duration-500 backdrop-blur-xl ${
+        className={`w-full group relative flex items-center gap-3 px-4 py-3 rounded-xl border transition-all duration-500 backdrop-blur-xl ${
           isPlaying
-            ? "bg-[#d42426]/20 border-[#d42426]/40 shadow-[0_0_20px_rgba(212,36,38,0.2)]"
+            ? "bg-[#d42426]/10 border-[#d42426]/30 shadow-[0_0_15px_rgba(212,36,38,0.1)]"
             : audioError
-            ? "bg-red-500/20 border-red-500/40 shadow-[0_0_20px_rgba(239,68,68,0.2)]"
-            : "bg-black/40 border-white/10 hover:border-white/20"
+            ? "bg-red-500/10 border-red-500/30"
+            : "bg-white/[0.03] border-white/5 hover:bg-white/[0.08] hover:border-white/10"
         }`}
       >
         {/* Animated Sound Bars */}
-        <div className="flex items-center gap-0.5 h-4 w-5">
+        <div className="flex items-center gap-0.5 h-3 w-4 shrink-0">
           {[1, 2, 3, 4].map((i) => (
             <div
               key={i}
@@ -61,7 +61,7 @@ export default function AudioController() {
                   ? "text-[#d42426]"
                   : audioError
                   ? "text-red-500"
-                  : "text-white/40"
+                  : "text-white/20"
               }`}
               style={{
                 animationDelay: `${i * 0.1}s`,
@@ -71,47 +71,31 @@ export default function AudioController() {
           ))}
         </div>
 
-        <div className="flex flex-col items-start ">
-          <span className="text-[9px] font-black uppercase tracking-[0.2em] text-white/40">
+        <div className="flex flex-col items-start min-w-0">
+          <span className="text-[8px] font-black uppercase tracking-[0.2em] text-white/30 truncate w-full">
             {audioError
-              ? "System Audio: Failed"
+              ? "Audio: Error"
               : isPlaying
-              ? "System Audio: Active"
-              : "System Audio: Muted"}
+              ? "Audio: Online"
+              : "Audio: Off"}
           </span>
           <span
-            className={`text-[10px] font-bold uppercase tracking-widest ${
+            className={`text-[9px] font-bold uppercase tracking-widest truncate w-full ${
               isPlaying
-                ? "text-white"
+                ? "text-white/80"
                 : audioError
                 ? "text-red-400"
-                : "text-white/60"
+                : "text-white/50"
             }`}
           >
             {audioError
-              ? "Link Error"
+              ? "Config Error"
               : isPlaying
-              ? "Cinematic Magic"
-              : "Initialize Sound"}
+              ? "Neural Magic"
+              : "Play Audio"}
           </span>
         </div>
-
-        {/* Neural Pulse Effect */}
-        {!hasInteracted && !audioError && (
-          <div className="absolute inset-0 rounded-2xl border border-[#d42426] animate-ping opacity-20 pointer-events-none" />
-        )}
       </button>
-
-      {/* Tooltip */}
-      <div className="absolute bottom-full right-0 mb-4 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
-        <div className="bg-black/80 backdrop-blur-md px-3 py-1.5 rounded-lg border border-white/10 whitespace-nowrap">
-          <p className="text-[8px] font-black text-[#ffcc33] uppercase tracking-widest">
-            {audioError
-              ? "CHECK PUBLIC/MUSIC/CHRISTMAS-BG.MP3"
-              : "Neural Audio Link v1.0.5"}
-          </p>
-        </div>
-      </div>
     </div>
   );
 }

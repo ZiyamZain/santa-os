@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   CountryJoyData,
   LetterData,
@@ -53,7 +53,7 @@ export default function RightPanel({
   onAssignTask?: (elfId: string, task: Task) => void;
 }) {
   return (
-    <aside className="w-80 bg-black/40 border-l border-[#d42426]/20 flex flex-col h-full backdrop-blur-xl">
+    <aside className="w-[450px] bg-black/40 border-l border-[#d42426]/20 flex flex-col h-full backdrop-blur-xl">
       <div className="p-6 border-b border-white/5">
         <h3 className="text-xs font-black uppercase tracking-[0.2em] text-[#ffcc33]/80">
           Contextual Data
@@ -178,6 +178,41 @@ function RegionalDetails({ data }: { data: CountryJoyData }) {
 
 function LetterDetails({ letter }: { letter: LetterData }) {
   const meta = emotionMetadata[letter.emotion];
+  const [insight, setInsight] = useState<{
+    thoughtProcess: string[];
+    deepInsight: string;
+    personalRecommendation: string;
+  } | null>(null);
+  const [isDecrypting, setIsDecrypting] = useState(false);
+
+  useEffect(() => {
+    // Start decryption when a new letter is selected
+    setIsDecrypting(true);
+    setInsight(null);
+
+    const fetchInsight = async () => {
+      try {
+        const response = await fetch("/api/decrypt", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            letterContent: letter.text,
+            childName: letter.childName,
+          }),
+        });
+        const data = await response.json();
+        setInsight(data);
+      } catch (error) {
+        console.error("Neural Link Failed:", error);
+      } finally {
+        setIsDecrypting(false);
+      }
+    };
+
+    const timer = setTimeout(fetchInsight, 1000); // Cinematic delay
+    return () => clearTimeout(timer);
+  }, [letter.id, letter.text, letter.childName]);
+
   return (
     <div className="space-y-8 animate-in fade-in slide-in-from-right-4 duration-500">
       <section className="space-y-4">
@@ -216,10 +251,98 @@ function LetterDetails({ letter }: { letter: LetterData }) {
         <h4 className="text-[10px] font-black text-white/20 uppercase tracking-[0.2em]">
           Message Content
         </h4>
-        <div className="p-6 rounded-2xl bg-white/[0.03] border border-white/5 relative">
+        <div className="p-6 rounded-2xl bg-white/[0.03] border border-white/5 relative group overflow-hidden">
+          <div className="absolute top-0 right-0 p-2 opacity-0 group-hover:opacity-100 transition-opacity">
+            <div className="text-[8px] font-mono text-white/20 uppercase tracking-widest">
+              Original Transmission
+            </div>
+          </div>
           <p className="text-sm text-white/80 leading-relaxed italic z-10 relative">
             &quot;{letter.text}&quot;
           </p>
+        </div>
+      </section>
+
+      <section className="space-y-4">
+        <div className="flex justify-between items-center">
+          <h4 className="text-[10px] font-black text-[#ffcc33] uppercase tracking-[0.2em]">
+            Neural Wish Decryptor
+          </h4>
+          {isDecrypting && (
+            <div className="flex gap-1">
+              <div className="w-1 h-1 bg-[#ffcc33] animate-bounce" />
+              <div className="w-1 h-1 bg-[#ffcc33] animate-bounce [animation-delay:0.2s]" />
+              <div className="w-1 h-1 bg-[#ffcc33] animate-bounce [animation-delay:0.4s]" />
+            </div>
+          )}
+        </div>
+
+        <div className="p-6 rounded-2xl bg-[#ffcc33]/5 border border-[#ffcc33]/20 space-y-6 relative overflow-hidden">
+          {isDecrypting ? (
+            <div className="space-y-4 py-4">
+              {[1, 2, 3].map((i) => (
+                <div
+                  key={i}
+                  className="h-2 bg-white/5 rounded-full animate-pulse w-full last:w-2/3"
+                />
+              ))}
+              <div className="text-[10px] text-white/20 font-mono uppercase text-center animate-pulse">
+                Running Deep-Heuristic Scanning...
+              </div>
+            </div>
+          ) : insight ? (
+            <>
+              <div className="space-y-2">
+                <span className="text-[9px] font-black text-white/20 uppercase tracking-widest">
+                  AI Thought Process
+                </span>
+                <div className="space-y-1.5">
+                  {(insight as any).thoughtProcess?.map(
+                    (step: string, i: number) => (
+                      <div
+                        key={i}
+                        className="flex items-center gap-2 text-[10px] font-mono text-[#ffcc33]/60"
+                      >
+                        <span className="text-emerald-500">✓</span>
+                        {step}
+                      </div>
+                    )
+                  )}
+                  {!(insight as any).thoughtProcess && (
+                    <div className="text-[10px] font-mono text-red-400/60 italic">
+                      Analysis steps encrypted or unavailable.
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <span className="text-[9px] font-black text-white/20 uppercase tracking-widest">
+                  Core Insight
+                </span>
+                <p className="text-xs text-white/80 leading-relaxed font-medium">
+                  {(insight as any).deepInsight ? (
+                    <Typewriter text={(insight as any).deepInsight} />
+                  ) : (
+                    "Neural link established but semantic data is corrupted."
+                  )}
+                </p>
+              </div>
+
+              <div className="p-3 rounded-lg bg-black/40 border border-[#ffcc33]/10">
+                <span className="text-[9px] font-black text-[#ffcc33] uppercase tracking-[0.2em]">
+                  Strategy Suggestion
+                </span>
+                <p className="text-[11px] text-white/70 mt-1 italic">
+                  "{insight.personalRecommendation}"
+                </p>
+              </div>
+            </>
+          ) : (
+            <div className="text-[10px] text-white/20 font-mono uppercase text-center py-4">
+              Waiting for Neural Link Authorization...
+            </div>
+          )}
         </div>
       </section>
 
@@ -230,6 +353,23 @@ function LetterDetails({ letter }: { letter: LetterData }) {
       </section>
     </div>
   );
+}
+
+function Typewriter({ text }: { text: string }) {
+  const [displayedText, setDisplayedText] = useState("");
+
+  useEffect(() => {
+    setDisplayedText("");
+    let i = 0;
+    const timer = setInterval(() => {
+      setDisplayedText((prev) => prev + text.charAt(i));
+      i++;
+      if (i >= text.length) clearInterval(timer);
+    }, 20);
+    return () => clearInterval(timer);
+  }, [text]);
+
+  return <>{displayedText}</>;
 }
 
 function ElfDetails({

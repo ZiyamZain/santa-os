@@ -29,13 +29,22 @@ A real-time tactical overview of the world's emotional state. Regions glow based
 - **Tactical Scanning:** Identifies regions where festive spirit is high and where it needs an extra sprinkle of magic.
 - **Regional Deep-Dive:** One click reveals the dominant emotion and priority levels for any continent.
 
-### 📬 Letters & Emotion Engine
+### 📬 Letters & Emotion Engine (Neural Wish Decryptor)
 
-Gone are the days of just reading text. Our neural engine analyzes the "ink between the lines."
+Gone are the days of just reading text. Our engine analyzes the "ink between the lines."
 
 - **Sentiment Detection:** Automatically identifies if a child is _Lonely_, _Excited_, _Hopeful_, or _Anxious_.
-- **Confidence Metrics:** Transparent AI that highlights how sure it is of an emotional signal.
+- **🧠 Neural Wish Decryptor (Gemini AI):** A live AI layer that analyzes emotional subtext. It provides Santa with a specific "AI Thought Process" and a deep "Core Insight" for every letter.
+- **Typing Transcript:** Watch the AI "think" in real-time as it decrypts the true heart of the wish.
 - **Human-in-the-Loop:** Tools for Santa to review, analyze, and authorize gift recommendations personally.
+
+### 🎁 Gift Intelligence Module
+
+Logistics is the backbone of the North Pole. We track every wooden train and doll with precision.
+
+- **Real-Time Stock Monitoring:** Live inventory tracking of all toy categories.
+- **Production Analytics:** Visualize current stock vs. target goals for every gift category.
+- **Heuristic Alerts:** Automatic notifications when demand exceeds current workshop output.
 
 ### 🧝 Elf Operations Module
 
@@ -50,7 +59,14 @@ Managing a workshop of centuries-old magical beings requires precision.
 We believe festive technology must be ethical.
 
 - **The Santa Oath:** Santa always makes the final call. The AI suggests; the Heart decides.
-- **Privacy-by-Design:** All letters are processed locally within the secure North Pole Node.
+- **Graceful Fallback:** If the neural link fails, the system seamlessly reverts to "Local Heuristic Analysis" to ensure zero downtime.
+
+### 🎵 Cinematic Audio Symphony
+
+Immersive sound design is built directly into the core experience.
+
+- **North Pole Soundscape:** A curated Christmas background track to keep the team focused.
+- **Integrated Sidebar Controls:** Control the soundscape directly from the sidebar—Mute, Play, or Toggle the "Cinematic Magic" at any time.
 
 ---
 
@@ -58,11 +74,11 @@ We believe festive technology must be ethical.
 
 In SantaOS, AI doesn't stand for Artificial Intelligence—it stands for **Augmented Insight**.
 
-We don't use algorithms to decide who is "Naughty or Nice." We use them to find the children who are struggling to find their own joy. The system is designed to highlight **loneliness** as much as **excitement**, ensuring that the most vulnerable wishes are the ones that never get lost in the snow.
+We don't use algorithms to decide who is "Naughty or Nice." We use them to find the children who are struggling to find their own joy. Using **Google Gemini API**, we ensure that the most vulnerable wishes are the ones that never get lost in the snow.
 
 ---
 
-## 📸 System Preview ## 🚀 Deployment (For Junior Elves)
+## 🚀 Deployment (For Junior Elves)
 
 To initialize the North Pole Node on your local machine:
 
@@ -74,11 +90,16 @@ To initialize the North Pole Node on your local machine:
     ```bash
     npm install
     ```
-3.  **Launch the Command Center:**
+3.  **Establish Neural Link (Optional Gemini API):**
+    Create a `.env.local` file in the root directory and add your key:
+    ```bash
+    GEMINI_API_KEY=your_key_here
+    ```
+4.  **Launch the Command Center:**
     ```bash
     npm run dev
     ```
-4.  **Operational Access:**
+5.  **Operational Access:**
     Navigate to `http://localhost:3000` in your secure browser.
 
 ---
@@ -86,4 +107,4 @@ To initialize the North Pole Node on your local machine:
 ### "Christmas isn't a logistics problem. It's a connection promise."
 
 **Built with ❤️ (and ☕) for the Christmas Hackathon.**
-**Next.js 16 | React 19 | Tailwind CSS | Magic**
+**Next.js 16 | React 19 | Google Gemini API | Tailwind CSS | Magic**

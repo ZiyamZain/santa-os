@@ -1,6 +1,7 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { worldJoyData, CountryJoyData } from "@/data/mock-data";
 
 export default function GlobalJoyMap({
@@ -102,7 +103,79 @@ export default function GlobalJoyMap({
 
       {/* Scanning Line Effect */}
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#d42426]/5 to-transparent h-20 w-full animate-scan pointer-events-none" />
+
+      {/* Orbital Sleigh Tracker */}
+      <SleighTracker />
     </div>
+  );
+}
+
+function SleighTracker() {
+  const [currentPos, setCurrentPos] = useState({ x: 10, y: 30 });
+  const [nextPos, setNextPos] = useState({ x: 80, y: 70 });
+
+  useEffect(() => {
+    const moveSleigh = () => {
+      const randomRegion =
+        worldJoyData[Math.floor(Math.random() * worldJoyData.length)];
+      setCurrentPos(nextPos);
+      setNextPos({
+        x: randomRegion.coordinates.x,
+        y: randomRegion.coordinates.y,
+      });
+    };
+
+    const interval = setInterval(moveSleigh, 8000);
+    return () => clearInterval(interval);
+  }, [nextPos]);
+
+  return (
+    <motion.div
+      animate={{
+        left: `${nextPos.x}%`,
+        top: `${nextPos.y}%`,
+      }}
+      transition={{
+        duration: 8,
+        ease: "linear",
+      }}
+      className="absolute w-12 h-12 -translate-x-1/2 -translate-y-1/2 pointer-events-none z-30"
+    >
+      {/* Sleigh Aura */}
+      <div className="absolute inset-0 bg-[#ffcc33]/20 blur-xl rounded-full scale-150 animate-pulse" />
+
+      {/* Sleigh Icon Placeholder / SVG */}
+      <div className="relative flex flex-col items-center">
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          className="w-8 h-8 text-[#ffcc33] drop-shadow-[0_0_8px_rgba(255,204,51,0.8)]"
+        >
+          <path
+            d="M3 17h18l-2-2H5l-2 2zM5 15l1-4h12l1 4M7 11l1-4h8l1 4"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+          <path
+            d="M12 7V4m0 0l-2 2m2-2l2 2"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+        <div className="mt-1 px-1.5 py-0.5 bg-black/80 rounded border border-[#ffcc33]/30">
+          <span className="text-[7px] font-black text-[#ffcc33] uppercase tracking-tighter whitespace-nowrap">
+            SS-01: IN-FLIGHT
+          </span>
+        </div>
+      </div>
+
+      {/* Ion Trail */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-[1px] bg-gradient-to-r from-transparent via-[#ffcc33]/20 to-transparent -rotate-12 opacity-50" />
+    </motion.div>
   );
 }
 

@@ -1,6 +1,8 @@
 "use client";
 
 import React from "react";
+import { motion } from "framer-motion";
+import AudioController from "./AudioController";
 
 const icons = {
   map: <path d="M3 6l6-3 6 3 6-3v15l-6 3-6-3-6 3V6zm6-3v15m6-15v15" />,
@@ -27,16 +29,16 @@ type Module = {
   id: string;
   label: string;
   icon: keyof typeof icons;
+  badge?: string;
 };
 
 const modules: Module[] = [
   { id: "map", label: "Global Joy Map", icon: "map" },
-  { id: "letters", label: "Letters", icon: "mail" },
+  { id: "letters", label: "Letters", icon: "mail", badge: "AI" },
   { id: "intelligence", label: "Gift Intelligence", icon: "gift" },
   { id: "elves", label: "Elf Operations", icon: "users" },
   { id: "delivery", label: "Time & Delivery", icon: "clock" },
   { id: "archive", label: "Forgotten Wishes", icon: "archive" },
-  { id: "governance", label: "AI Governance", icon: "shield" },
 ];
 
 export default function Sidebar({
@@ -48,9 +50,53 @@ export default function Sidebar({
 }) {
   return (
     <aside className="w-64 bg-black/40 border-r border-[#d42426]/20 flex flex-col h-full backdrop-blur-xl">
-      <div className="p-6 border-b border-white/5">
-        <h2 className="text-xl font-bold tracking-tighter text-[#ffcc33]">
-          SANTA<span className="text-[#d42426]">OS</span>
+      <div className="p-6 border-b border-white/5 relative group/logo">
+        <h2 className="text-xl font-bold tracking-tighter text-[#ffcc33] flex items-center">
+          <span className="relative">
+            S
+            <motion.div
+              initial={{ rotate: -15, y: 0 }}
+              animate={{ rotate: [-15, -10, -15], y: [0, -1, 0] }}
+              transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+              className="absolute -top-2 -left-[6px] w-6 h-6 pointer-events-none z-10"
+            >
+              <svg
+                viewBox="0 0 40 40"
+                className="w-full h-full drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]"
+              >
+                {/* Red Cap Body */}
+                <path
+                  d="M10,25 C10,25 12,12 25,8 C28,12 32,15 30,22"
+                  stroke="#d42426"
+                  strokeWidth="6"
+                  fill="none"
+                  strokeLinecap="round"
+                />
+                <path
+                  d="M10,25 C10,25 12,12 25,8 C28,12 32,15 30,22"
+                  fill="#d42426"
+                />
+
+                {/* White Fur Trim Base */}
+                <path
+                  d="M8,26 C8,24 32,21 32,23 C32,25 30,28 28,28 C26,28 25,26 23,26 C21,26 20,28 18,28 C16,28 15,26 13,26 C11,26 10,28 8,28 C6,28 8,26 8,26 Z"
+                  fill="white"
+                />
+
+                {/* White Pom-pom */}
+                <circle cx="28" cy="9" r="4" fill="white" />
+                <circle cx="28" cy="9" r="3" fill="url(#pom-gradient)" />
+
+                <defs>
+                  <radialGradient id="pom-gradient" cx="50%" cy="50%" r="50%">
+                    <stop offset="0%" stopColor="white" />
+                    <stop offset="100%" stopColor="#f0f0f0" />
+                  </radialGradient>
+                </defs>
+              </svg>
+            </motion.div>
+          </span>
+          ANTA<span className="text-[#d42426]">OS</span>
         </h2>
         <p className="text-[10px] text-white/30 uppercase tracking-[0.3em] font-medium">
           Control Command
@@ -81,13 +127,23 @@ export default function Sidebar({
             >
               {icons[m.icon]}
             </svg>
-            <span className="text-sm font-medium tracking-wide">{m.label}</span>
+            <div className="flex-1 flex items-center justify-between pr-2">
+              <span className="text-sm font-medium tracking-wide">
+                {m.label}
+              </span>
+              {m.badge && (
+                <span className="text-[8px] font-black px-1.5 py-0.5 rounded bg-[#d42426]/20 text-[#d42426] border border-[#d42426]/30 animate-pulse">
+                  {m.badge}
+                </span>
+              )}
+            </div>
           </button>
         ))}
       </nav>
 
-      <div className="p-6 border-t border-white/5 bg-black/20">
-        <div className="flex items-center gap-3">
+      <div className="p-2 border-t border-white/5 bg-black/20">
+        <AudioController />
+        <div className="flex items-center gap-3 px-4 py-2">
           <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
           <span className="text-[10px] font-bold text-white/60 tracking-widest uppercase">
             System Online
