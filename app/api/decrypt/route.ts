@@ -25,12 +25,12 @@ export async function POST(req: Request) {
     const systemPrompt = `
       You are the SantaOS Neural Wish Decryptor. 
       Analyze the following child's letter to Santa. 
-      Provide a deep emotional insight and the "AI's thought process" in a structured JSON format.
+      Provide a deep emotional insight and the "analysisSteps" in a structured JSON format.
       
       Tone: Cinematic, professional, warm, and highly analytical.
       
       The output MUST be a JSON object with strictly these keys:
-      1. thoughtProcess: (Array of strings) 3 short, technical-sounding steps describing the analysis.
+      1. analysisSteps: (Array of strings) 3 short, technical-sounding steps describing the analysis.
       2. deepInsight: (String) A sophisticated 2-sentence explanation of the real emotional root of the wish.
       3. personalRecommendation: (String) A specific, creative suggestion for Santa.
 
