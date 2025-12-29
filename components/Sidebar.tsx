@@ -23,6 +23,7 @@ const icons = {
   ),
   archive: <path d="M21 8v13H3V8M1 3h22v5H1zM10 12h4" />,
   shield: <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />,
+  mission: <path d="M12 2v20M2 12h20M12 2l4 4-4 4M12 22l-4-4 4-4" />,
 };
 
 type Module = {
@@ -39,6 +40,7 @@ const modules: Module[] = [
   { id: "elves", label: "Elf Operations", icon: "users" },
   { id: "delivery", label: "Time & Delivery", icon: "clock" },
   { id: "archive", label: "Forgotten Wishes", icon: "archive" },
+  { id: "mission", label: "Our Story", icon: "mission" },
 ];
 
 export default function Sidebar({

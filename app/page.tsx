@@ -7,6 +7,7 @@ import GlobalJoyMap from "@/components/GlobalJoyMap";
 import LettersModule from "@/components/LettersModule";
 import ElfOperationsModule from "@/components/ElfOperationsModule";
 
+import MissionProtocol from "@/components/MissionProtocol";
 import GiftIntelligenceModule from "@/components/GiftIntelligenceModule";
 
 import AudioController from "@/components/AudioController";
@@ -181,6 +182,7 @@ export default function SantaDashboard() {
                 </header>
 
                 <div className="flex-1 min-h-0">
+                  {activeModule === "mission" && <MissionProtocol />}
                   {activeModule === "map" && (
                     <GlobalJoyMap
                       onSelectCountry={setSelectedCountry}
