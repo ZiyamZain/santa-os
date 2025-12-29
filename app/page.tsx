@@ -8,6 +8,7 @@ import LettersModule from "@/components/LettersModule";
 import ElfOperationsModule from "@/components/ElfOperationsModule";
 import AIEthicsModule from "@/components/AIEthicsModule";
 import GiftIntelligenceModule from "@/components/GiftIntelligenceModule";
+import AudioController from "@/components/AudioController";
 import {
   worldJoyData,
   CountryJoyData,
@@ -215,6 +216,8 @@ export default function SantaDashboard() {
         selectedElf={activeModule === "elves" ? selectedElf : undefined}
         onAssignTask={handleAssignTask}
       />
+
+      <AudioController />
     </main>
   );
 }
